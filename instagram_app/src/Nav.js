@@ -1,11 +1,26 @@
-import FeedsScreen from './Screens/FeedsScreen';
-import DiscoveryScreen from './Screens/DiscoveryScreen';
-import UserScreen from './Screens/UserScreen';
-import NotiScreen from './Screens/NotiScreen';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import React, { Component } from 'react';
+import { FeedsScreen, DiscoveryScreen, UserScreen, NotiScreen, LoginScreen } from './Screens'
+import { Platform, Text, View, } from 'react-native';
+import { TabNavigator, TabBarBottom, S } from 'react-navigation';
+import appInitialized from './utils/appInitialized';
+import { AppRegistry } from 'react-native';
+import App from '../App' ;
+import WithProvider from '../src/components/WithProvider';
 
-export {
-    FeedsScreen,
-    DiscoveryScreen,
-    UserScreen,
-    NotiScreen
-};
+export function startLogin() {
+  return (
+    <LoginScreen />
+  );
+}
+
+export function startMainApp() {
+  return (
+    App
+  );
+}
+
+
+export function init(){
+    appInitialized();
+}

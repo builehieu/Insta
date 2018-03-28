@@ -1,19 +1,19 @@
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import React, { Component } from 'react';
-import { FeedsScreen, DiscoveryScreen, UserScreen, NotiScreen } from './src/Nav'
+import { FeedsScreen, DiscoveryScreen, UserScreen, NotiScreen, LoginScreen } from './src/Screens'
 import { Platform, Text, View, } from 'react-native';
 import { TabNavigator, TabBarBottom, } from 'react-navigation';
 
 import WithProvider from './src/components/WithProvider';
 
-
-export default TabNavigator({
+const MainApp = TabNavigator({
   Home: { screen: WithProvider(FeedsScreen) },
   Discovery: { screen: WithProvider(DiscoveryScreen) },
   Noti: { screen: WithProvider(NotiScreen) },
   User: { screen: WithProvider(UserScreen) },
 
-}, {
+},
+ {
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, tintColor }) => {
         const { routeName } = navigation.state;
@@ -46,3 +46,5 @@ export default TabNavigator({
     swipeEnabled: true,
   }
 );
+
+export default MainApp

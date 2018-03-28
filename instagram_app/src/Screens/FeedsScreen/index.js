@@ -33,11 +33,7 @@ class FeedsScreen extends React.Component {
         this.setState({isRefreshing: false})
     }
     render() {
-        console.log('====================================');
-        console.log("props", this.props);
-        console.log('====================================');
-
-        if (this.props.data.loading) {
+            if (this.props.data.loading) {
             return (
                 <View style={styles.loadingWrapper}>
                     <ActivityIndicator size="large" />

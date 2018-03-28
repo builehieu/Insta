@@ -63,8 +63,7 @@ class DiscoveryScreen extends React.Component {
                     />
                 }
             />
-            
-            
+                          
         );
     }
 }
