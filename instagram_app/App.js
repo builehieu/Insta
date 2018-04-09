@@ -1,50 +1,45 @@
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import React, { Component } from 'react';
-import { FeedsScreen, DiscoveryScreen, UserScreen, NotiScreen, LoginScreen } from './src/Screens'
-import { Platform, Text, View, } from 'react-native';
-import { TabNavigator, TabBarBottom, } from 'react-navigation';
+import { LoginScreen } from './src/Screens'
+import { View, StyleSheet } from 'react-native';
+import Nav from './src/Nav';
+import { AsyncStorage } from 'react-native';
 
-import WithProvider from './src/components/WithProvider';
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
+})
 
-const MainApp = TabNavigator({
-  Home: { screen: WithProvider(FeedsScreen) },
-  Discovery: { screen: WithProvider(DiscoveryScreen) },
-  Noti: { screen: WithProvider(NotiScreen) },
-  User: { screen: WithProvider(UserScreen) },
-
-},
- {
-    navigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ focused, tintColor }) => {
-        const { routeName } = navigation.state;
-        let iconName;
-        if (routeName === 'Home') {
-          iconName = `apps`;
-        } else if (routeName === 'Discovery') {
-          iconName = `search`;
-        }
-        else if (routeName === 'User') {
-          iconName = `person`;
-        }
-        else if (routeName === 'Noti') {
-          iconName = `favorite`;
-        }
-        // You can return any component that you like here! We usually use an
-        // icon component from react-native-vector-icons
-        return <MaterialIcons name={iconName} size={27} color={tintColor} />;
-      },
-    }),
-    tabBarOptions: {
-      showLabel: false,
-      activeTintColor: 'black',
-      inactiveTintColor: '#d6d6d6',
-
-    },
-    tabBarComponent: TabBarBottom,
-    tabBarPosition: 'bottom',
-    animationEnabled: true,
-    swipeEnabled: true,
+class MainApp extends Component {
+  state = { display: 'home' }
+  renderForm() {
+    this.appInitialized();
+    switch (this.state.display) {
+      case 'login':
+        return <LoginScreen />
+        break;
+      case 'home':
+        return <Nav />
+        break;
+    }
   }
-);
+  async appInitialized() {
+    const token = await AsyncStorage.getItem('@instagram_app/token');
 
-export default MainApp
+    if (!token) {
+      this.setState({ display: 'login' })
+    } else {
+      this.setState({ display: 'home' })
+    }
+  }
+  render() {
+    return (
+      <View style={styles.root}>
+        {this.renderForm()}
+      </View>
+
+    );
+  }
+}
+
+export default MainApp;

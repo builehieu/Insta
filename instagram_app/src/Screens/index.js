@@ -1,4 +1,4 @@
-import LoginScreen from './NotiScreen';
+import LoginScreen from './LoginScreen';
 import FeedsScreen from './FeedsScreen';
 import DiscoveryScreen from './DiscoveryScreen';
 import UserScreen from './UserScreen';
