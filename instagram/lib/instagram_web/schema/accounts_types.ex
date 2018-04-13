@@ -7,6 +7,6 @@ defmodule InstagramWeb.Schema.AccountsTypes do
 
     enum :provider do
         value :facebook
-        value :google 
+  
     end
 end

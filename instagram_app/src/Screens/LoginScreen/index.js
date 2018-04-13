@@ -1,6 +1,22 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, ToastAndroid, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Image } from 'react-native';
+import {
+    View,
+    Text,
+    TextInput,
+    ToastAndroid,
+    TouchableOpacity,
+    StyleSheet,
+    KeyboardAvoidingView,
+    Image,
+    AsyncStorage
+} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
+
+import { LoginManager, AccessToken } from 'react-native-fbsdk';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+import { authToken } from '../../utils/constants';
+
 
 const styles = StyleSheet.create({
     root: {
@@ -71,13 +87,33 @@ class LoginScreen extends Component {
         password: '',
     }
 
-    onPressBtnFBLogIn  = () =>{
-        ToastAndroid.show('login with FB', ToastAndroid.SHORT);
+    onPressBtnFBLogIn = async () => {
+        const res = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
+
+        if (res.grantedPermissions && !res.isCancelled) {
+            const data = await AccessToken.getCurrentAccessToken();
+
+            if (data) {
+                const serverResponse = await this.props.loginMutation({
+                    variables: {
+                        provider: 'FACEBOOK',
+                        token: data.accessToken,
+                    },
+                });
+
+                const { token } = serverResponse.data.login;
+                await AsyncStorage.setItem(authToken, token);
+
+                console.log('====================================');
+                console.log('token', token);
+                console.log('====================================');
+            }
+        }
     };
 
     onPressBtnLogIn = () => {
         if (this.state.username === 'admin' && this.state.password === '123') {
-            ToastAndroid.show('Username or password', ToastAndroid.SHORT);
+            ToastAndroid.show('Welcome ', ToastAndroid.SHORT);
         } else {
             ToastAndroid.show('Username or password incorrect!', ToastAndroid.SHORT);
         }
@@ -122,12 +158,10 @@ class LoginScreen extends Component {
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', alignContent: 'center' }}>
-                     
-                            
-                            <TouchableOpacity style={styles.button}
-                                onPress={this.onPressBtnLogIn}>
-                                <Text style={styles.buttonLable}>Log in</Text>
-                            </TouchableOpacity>
+                        <TouchableOpacity style={styles.button}
+                            onPress={this.onPressBtnLogIn}>
+                            <Text style={styles.buttonLable}>Log in</Text>
+                        </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.smallButton}
                             onPress={this.onPressBtnFBLogIn}
@@ -155,4 +189,13 @@ class LoginScreen extends Component {
     }
 }
 
-export default LoginScreen;
+const loginMutation = gql`
+    mutation($provider: Provider, $token: String){
+        login(provider: $provider, token: $token){
+            token
+        }
+    }
+`;
+
+
+export default graphql(loginMutation, { name: 'loginMutation' })(LoginScreen);

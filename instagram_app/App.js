@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { LoginScreen } from './src/Screens'
+import { LoginScreen, Login } from './src/Screens'
 import { View, StyleSheet } from 'react-native';
+import { StackNavigator } from 'react-navigation'
 import Nav from './src/Nav';
 import { AsyncStorage } from 'react-native';
+import { authToken } from './src/utils/constants';
 
 const styles = StyleSheet.create({
   root: {
@@ -10,13 +12,18 @@ const styles = StyleSheet.create({
   },
 })
 
+
+
 class MainApp extends Component {
-  state = { display: 'home' }
+  state = {
+    display: 'home',
+    token: ''
+  }
   renderForm() {
     this.appInitialized();
     switch (this.state.display) {
       case 'login':
-        return <LoginScreen />
+        return <Login />
         break;
       case 'home':
         return <Nav />
@@ -24,8 +31,7 @@ class MainApp extends Component {
     }
   }
   async appInitialized() {
-    const token = await AsyncStorage.getItem('@instagram_app/token');
-
+    const token = await AsyncStorage.getItem(authToken);
     if (!token) {
       this.setState({ display: 'login' })
     } else {
@@ -37,7 +43,6 @@ class MainApp extends Component {
       <View style={styles.root}>
         {this.renderForm()}
       </View>
-
     );
   }
 }
