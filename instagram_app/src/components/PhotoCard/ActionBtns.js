@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const styles = StyleSheet.create({
     root: {
@@ -10,50 +11,60 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderTopWidth: 0.8,
         borderColor: '#eaeaea'
-        
+
     },
     actionWrapper: {
-        flex:1,
+        flex: 1,
         alignItems: 'center',
         flexDirection: 'row',
-      //  justifyContent: 'flex-start',        
+        //  justifyContent: 'flex-start',        
     },
     actionBtn: {
-        flex:1,
-        justifyContent: 'center', 
-         
+        flex: 1,
+        justifyContent: 'center',
+
     },
-    fakeView:{
+    fakeView: {
         flex: 1.4,
     },
-    bookmarkWrapper:{
+    bookmarkWrapper: {
         flex: 0.3,
         justifyContent: 'center',
         alignItems: 'flex-end',
-        
+
     }
 
 })
 
 class ActionBtns extends Component {
     state = {}
+
+    getLikeIcon = () => {
+        if (this.props.viewerLike){
+            return  <FontAwesome name="heart" size={27} color="orange" />
+        }
+        return  <Feather name="heart" size={27} color="black" />
+    }
     render() {
         return (
             <View style={styles.root}>
                 <View style={styles.actionWrapper}>
-                    <TouchableOpacity  style={styles.actionBtn}>
-                        <Feather name="heart" size={27} color="black"/>
-                     </TouchableOpacity>
-                     <TouchableOpacity style={styles.actionBtn}>
+                    <TouchableOpacity
+                        style={styles.actionBtn}
+                        onPress={this.props.onPressBtnLike}
+                    >
+                       {this.getLikeIcon()}
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.actionBtn}>
                         <Feather name="message-circle" size={27} color="black" />
-                     </TouchableOpacity>
-                     <TouchableOpacity style={styles.actionBtn}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.actionBtn}>
                         <Feather name="zap" size={27} color="black" />
-                     </TouchableOpacity>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.fakeView}></View>
-                <TouchableOpacity  style={styles.bookmarkWrapper}>
-                  <Feather name="bookmark" size={27} color="black"/>
+                <TouchableOpacity style={styles.bookmarkWrapper}>
+                    <Feather name="bookmark" size={27} color="black" />
                 </TouchableOpacity>
             </View>
         );

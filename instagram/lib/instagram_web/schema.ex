@@ -10,7 +10,7 @@ defmodule InstagramWeb.Schema do
     query do
         @desc "Get list of photos"
         field :photos, list_of(:photo) do
-           # middleware Middleware.Authorize
+            middleware Middleware.Authorize
             resolve &Resolvers.Posts.photos/3
         end
 
@@ -26,6 +26,13 @@ defmodule InstagramWeb.Schema do
             arg :token, :string
             arg :provider, type: :provider
             resolve &Resolvers.Accounts.login/3
+        end
+
+        @desc "Like or unlike a photo"
+        field :like_photo, :boolean do
+            arg :photo_id, non_null(:id)
+            middleware Middleware.Authorize
+            resolve &Resolvers.Reactions.like_photo/3
         end
     end
 end

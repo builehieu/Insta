@@ -8,15 +8,15 @@ import {
     StyleSheet,
     KeyboardAvoidingView,
     Image,
-    AsyncStorage
+    AsyncStorage,
+    ActivityIndicator
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
-
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { authToken } from '../../utils/constants';
-
+import { StackNavigator } from 'react-navigation';
 
 const styles = StyleSheet.create({
     root: {
@@ -80,19 +80,18 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     }
 })
-
 class LoginScreen extends Component {
     state = {
         username: '',
         password: '',
+        loading: false,
     }
 
     onPressBtnFBLogIn = async () => {
+        this.setState({ loading: true });
         const res = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
-
         if (res.grantedPermissions && !res.isCancelled) {
             const data = await AccessToken.getCurrentAccessToken();
-
             if (data) {
                 const serverResponse = await this.props.loginMutation({
                     variables: {
@@ -100,17 +99,15 @@ class LoginScreen extends Component {
                         token: data.accessToken,
                     },
                 });
-
                 const { token } = serverResponse.data.login;
                 await AsyncStorage.setItem(authToken, token);
+                this.setState({ loading: false });
+                const { navigate } = this.props.navigation;
+                navigate('Home');
 
-                console.log('====================================');
-                console.log('token', token);
-                console.log('====================================');
             }
         }
     };
-
     onPressBtnLogIn = () => {
         if (this.state.username === 'admin' && this.state.password === '123') {
             ToastAndroid.show('Welcome ', ToastAndroid.SHORT);
@@ -119,6 +116,13 @@ class LoginScreen extends Component {
         }
     }
     render() {
+        if (this.state.loading) {
+            return (
+                <View style={styles.root}>
+                    <ActivityIndicator size="large" color="#318DEE" />
+                </View>
+            )
+        }
         return (
             <KeyboardAvoidingView style={styles.root}>
                 <View style={styles.titileWrapper}>
@@ -196,6 +200,5 @@ const loginMutation = gql`
         }
     }
 `;
-
 
 export default graphql(loginMutation, { name: 'loginMutation' })(LoginScreen);

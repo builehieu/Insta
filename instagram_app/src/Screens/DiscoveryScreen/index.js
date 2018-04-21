@@ -7,18 +7,15 @@ import {
     View,
     RefreshControl
 } from 'react-native';
-
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-
 import Thumbnail from '../../components/Thumbnail';
 
 
 const styles = StyleSheet.create({
     root: {
         margin: 10,
-        alignItems: 'center',
-        
+        alignItems: 'center',       
     },
 
     loadingWrapper: {

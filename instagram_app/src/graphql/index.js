@@ -1,16 +1,38 @@
 import { ApolloClient } from 'apollo-client';
-import { HttpLink } from 'apollo-link-http';
+import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { setContext } from 'apollo-link-context';
+import { AsyncStorage } from 'react-native';
+
+import { authToken } from '../utils/constants';
+
+let token;
+
+const getToken = async () => {
+    if(token != null){
+        return token;
+    }
+
+    token = await AsyncStorage.getItem(authToken);
+    return token;
+};
 
 const cache = new InMemoryCache();
 
-const link = new HttpLink({
-    uri: 'http://192.168.1.16:4000/graphiql',
-    onError: (e) => { console.log(e.graphQLErrors) }, 
+const httpLink = createHttpLink({ uri: 'http://192.168.1.18:4000/graphiql' });
+
+const authLink = setContext(async (_, { headers }) => {
+    await getToken();
+    return {
+        headers: {
+            ...headers,
+            authorization: token ? `Bearer ${token}`: null,
+        },
+    };
 });
 
 export const client = new ApolloClient({
-    link,
+    link: authLink.concat(httpLink),
     cache,
-    
+
 }); 

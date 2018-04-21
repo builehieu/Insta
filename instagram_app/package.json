@@ -10,6 +10,7 @@
     "@appandflow/touchable": "^2.0.0",
     "apollo-cache-inmemory": "^1.1.11",
     "apollo-client": "^2.2.7",
+    "apollo-link-context": "^1.0.8",
     "apollo-link-http": "^1.5.3",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.8.0",

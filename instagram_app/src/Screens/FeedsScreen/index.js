@@ -10,8 +10,9 @@ import {
 
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-
 import PhotoCard from '../../components/PhotoCard';
+import { StackNavigator } from 'react-navigation';
+import { FeedsPhotoFragment } from './fragments';
 
 const styles = StyleSheet.create({
     loadingWrapper: {
@@ -27,13 +28,13 @@ class FeedsScreen extends React.Component {
 
     _renderItem = ({ item }) => <PhotoCard data={item} />
 
-    _refreshRequest = async () => { 
-        this.setState({isRefreshing: true})
+    _refreshRequest = async () => {
+        this.setState({ isRefreshing: true })
         await this.props.data.refetch()
-        this.setState({isRefreshing: false})
+        this.setState({ isRefreshing: false })
     }
     render() {
-            if (this.props.data.loading) {
+        if (this.props.data.loading) {
             return (
                 <View style={styles.loadingWrapper}>
                     <ActivityIndicator size="large" />
@@ -58,14 +59,14 @@ class FeedsScreen extends React.Component {
     }
 }
 
+
 const getPhotos = gql`
     query{
         photos{
-            id
-            imageUrl
-            caption
+           ... feedsPhoto
         }
     }
-`
+    ${FeedsPhotoFragment}
+`;
 
 export default graphql(getPhotos)(FeedsScreen);
