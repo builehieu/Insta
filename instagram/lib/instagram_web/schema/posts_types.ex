@@ -15,4 +15,9 @@ defmodule InstagramWeb.Schema.PostsTypes do
 
 
     end
+
+    object :presign_url do
+        field :url, non_null(:string)
+        field :upload_url, non_null(:string)
+    end
 end

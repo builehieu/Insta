@@ -19,7 +19,7 @@ const getToken = async () => {
 
 const cache = new InMemoryCache();
 
-const httpLink = createHttpLink({ uri: 'http://192.168.1.18:4000/graphiql' });
+const httpLink = createHttpLink({ uri: 'http://192.168.1.19:4000/graphiql' });
 
 const authLink = setContext(async (_, { headers }) => {
     await getToken();

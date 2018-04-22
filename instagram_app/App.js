@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import { StackNavigator } from 'react-navigation'
 import MainScreen from './src/Screens/MainScreen';
 import { AsyncStorage } from 'react-native';
-import { authToken} from './src/utils/constants';
+import { authToken } from './src/utils/constants';
 
 
 const styles = StyleSheet.create({
@@ -19,19 +19,21 @@ class MainApp extends Component {
   async componentWillMount() {
     const token = await AsyncStorage.getItem(authToken);
     if (!token) {
-      this.setState({display: 'login'});
+      this.setState({ display: 'login' });
     } else {
-      this.setState({display: 'home'});
+      this.setState({ display: 'home' });
     }
-    console.log('====================================');
-    console.log('display', this.state.display);
-    console.log('token', token);
-    console.log('====================================');
+    // console.log('====================================');
+    // console.log('display', this.state.display);
+    // console.log('token', token);
+    // console.log('====================================');
   }
   render() {
-    return (
-      this.state.display == 'home' ? <MainScreen /> : <Login />
-    )
+    this.componentWillMount()
+    const { display } = this.state
+    let screen = display === 'home'? <MainScreen /> : <Login />
+    return screen
+    //this.state.display == 'home' ? <MainScreen /> : <Login />
   }
 }
 export default MainApp;

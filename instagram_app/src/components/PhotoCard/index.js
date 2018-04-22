@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 
 class PhotoCard extends Component {
     state = {}
-
+    
     onPressBtnLike = async () => {
         this.props.onLikePhotoMutation();
     };

@@ -102,8 +102,7 @@ class LoginScreen extends Component {
                 const { token } = serverResponse.data.login;
                 await AsyncStorage.setItem(authToken, token);
                 this.setState({ loading: false });
-                const { navigate } = this.props.navigation;
-                navigate('Home');
+                //this.props.navigation.navigate('Home');
 
             }
         }

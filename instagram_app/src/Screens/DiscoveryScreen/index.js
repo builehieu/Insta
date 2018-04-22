@@ -10,12 +10,12 @@ import {
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import Thumbnail from '../../components/Thumbnail';
-
+import { SearchBar } from 'react-native-elements';
 
 const styles = StyleSheet.create({
     root: {
         margin: 10,
-        alignItems: 'center',       
+        alignItems: 'center',
     },
 
     loadingWrapper: {
@@ -46,21 +46,29 @@ class DiscoveryScreen extends React.Component {
         }
 
         return (
-            
-            <FlatList 
-                contentContainerStyle={styles.root}
-                numColumns = {3}
-                data={this.props.data.photos}
-                keyExtractor={this._keyExtractor}
-                renderItem={this._renderItem}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={this.state.isRefreshing}
-                        onRefresh={this._refreshRequest}
-                    />
-                }
-            />
-                          
+            <View>
+                <SearchBar
+                    round
+                    lightTheme
+                    showLoading
+                    platform="android"
+                    placeholder='Search' />
+                <FlatList
+                    contentContainerStyle={styles.root}
+                    numColumns={3}
+                    data={this.props.data.photos}
+                    keyExtractor={this._keyExtractor}
+                    renderItem={this._renderItem}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this._refreshRequest}
+                        />
+                    }
+                />
+            </View>
+
+
         );
     }
 }

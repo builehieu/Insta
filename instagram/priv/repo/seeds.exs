@@ -1,6 +1,9 @@
-alias Instagram.{Posts, Repo}
+import Integer, only: [is_odd: 1]
+
+alias Instagram.{Posts, Repo, Accounts}
 
 mock_photos = 9
+mock_users = 5
 
 photos_list= [
     "https://cdn.dribbble.com/users/25514/screenshots/4337913/iterable-illustration-skething_1x.png",
@@ -14,10 +17,27 @@ photos_list= [
     "https://cdn.dribbble.com/users/1558435/screenshots/4337906/1x_1x.png"
 ]
 
+# User
+for idx <- 1..mock_users do
+   sex = if (is_odd(idx)), do: "men", else: "women"
+   avatar = "https://randomuser.me/api/portraits.#{sex}/#{idx}.jpg"
+   %Accounts.User{
+       email: Faker.Internet.email,
+       avatar: avatar,
+       username: Faker.Internet.user_name,
+       first_name: Faker.Name.first_name,
+       last_name: Faker.Name.last_name,
+       facebook_id: "#{idx}",
+    }
+    |> Repo.insert!
+end
+
+#Photo
 for idx <- 0..mock_photos do
     photo =%{
         image_url: Enum.at(photos_list,idx),
-        caption: Faker.Lorem.Shakespeare.hamlet
+        caption: Faker.Lorem.Shakespeare.hamlet,
+        user_id: Enum.random(1..mock_users)
     }
 
     %Posts.Photo{}

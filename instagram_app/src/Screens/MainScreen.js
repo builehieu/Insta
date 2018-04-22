@@ -1,11 +1,13 @@
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import React, { Component } from 'react';
-import { Feeds, Discovery, User, Noti, Login } from '../Screens'
+import { Feeds, Discovery, User, Noti, Login, Create } from '../Screens'
 import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
+
 
 const Tab = TabNavigator({
   Home: { screen: Feeds },
   Discovery: { screen: Discovery },
+  Create: { screen: Create },
   Noti: { screen: Noti },
   User: { screen: User },
 },
@@ -18,6 +20,9 @@ const Tab = TabNavigator({
           iconName = `apps`;
         } else if (routeName === 'Discovery') {
           iconName = `search`;
+        }
+        else if (routeName === 'Create') {
+          iconName = `control-point`;
         }
         else if (routeName === 'User') {
           iconName = `person`;
