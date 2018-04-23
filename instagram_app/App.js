@@ -29,7 +29,7 @@ class MainApp extends Component {
     // console.log('====================================');
   }
   render() {
-    this.componentWillMount()
+    // this.componentWillMount()
     const { display } = this.state
     let screen = display === 'home'? <MainScreen /> : <Login />
     return screen

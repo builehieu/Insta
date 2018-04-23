@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Button, Text, CameraRoll, AsyncStorage, List, TouchableOpacity, Image, FlatList, ActivityIndicator, Dimensions } from 'react-native';
 import { PermissionsAndroid } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import  CaptionScreen  from '../CaptionScreen';
+import CaptionScreen from '../CaptionScreen';
 
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -160,6 +160,8 @@ class CreatePhotoScreen extends React.Component {
         }
     };
 
+    
+
     render() {
         console.log('====================================');
         console.log('state', this.state);
@@ -171,12 +173,13 @@ class CreatePhotoScreen extends React.Component {
                 </View>
             )
         }
+        
         return (
 
             <View>
                 <View style={styles.headerWrapper}>
                     <View style={styles.header}>
-                        <TouchableOpacity style={styles.actionBtn}>
+                        <TouchableOpacity style={styles.actionBtn} onPress={()=>this.props.gotoCap()}>
                             <Feather name="x" size={27} color="black" />
                         </TouchableOpacity>
                         <Text>Pinstagram</Text>
@@ -206,16 +209,3 @@ class CreatePhotoScreen extends React.Component {
 }
 
 export default CreatePhotoScreen;
-
-// export default StackNavigator({
-//     Home: { screen: CreatePhotoScreen },
-//     PostPage: { screen: CaptionScreen },
-// },
-//     {
-//         headerMode: 'none',
-//         mode: 'modal',
-//         navigationOptions: {
-//             gesturesEnabled: false,
-//         },
-//     }
-// );

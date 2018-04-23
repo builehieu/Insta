@@ -2,7 +2,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import React, { Component } from 'react';
 import { Feeds, Discovery, User, Noti, Login, Create } from '../Screens'
 import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
-
+import CreatePhotoScreen from './CaptionScreen'
 
 const Tab = TabNavigator({
   Home: { screen: Feeds },
@@ -42,12 +42,38 @@ const Tab = TabNavigator({
     tabBarPosition: 'bottom',
     animationEnabled: true,
     swipeEnabled: true,
+    navigate:({navigation})=>{
+      gotoCap: navigation.navigate('CraetePhoto')
+    }
   }
 );
 
+class HomeTab extends Component{
+
+  constructor(props){
+    super(props);
+
+    this.onSomething = this.onSomething.bind(this)
+  }
+
+  onSomething = ()=>{
+    this.props.navigation.navigate('CraetePhoto')
+  }
+
+  render(){
+    return(
+      <Tab gotoCap={this.onSomething()} />
+    )
+  }
+}
+
+
 const MainScreen = StackNavigator({
-  Home: { screen: Tab },
+  Home: { screen: HomeTab },
   Login: { screen: Login },
+  CraetePhoto:{
+    screen: CreatePhotoScreen
+  }
 },
   {
     headerMode: 'none',

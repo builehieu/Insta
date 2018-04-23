@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 
 class CaptionScreen extends React.Component {
-    state = {  }
     render() {
         return (
-            <Text>CaptionScreen</Text>
+            <View style={{flexDirection:'row'}}>
+                <Image
+                    style={{height:150,width:150,backgroundColor:'red'}}
+                />
+            </View>
         );
     }
 }
