@@ -2,7 +2,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import React, { Component } from 'react';
 import { Feeds, Discovery, User, Noti, Login, Create } from '../Screens'
 import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
-import CreatePhotoScreen from './CaptionScreen'
+import CaptionScreen from './CaptionScreen'
 
 const Tab = TabNavigator({
   Home: { screen: Feeds },
@@ -41,47 +41,23 @@ const Tab = TabNavigator({
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     animationEnabled: true,
-    swipeEnabled: true,
-    navigate:({navigation})=>{
-      gotoCap: navigation.navigate('CraetePhoto')
-    }
+    swipeEnabled: false,
   }
 );
 
-class HomeTab extends Component{
 
-  constructor(props){
-    super(props);
+// const MainScreen = StackNavigator({
+//   Home: { screen: Tab },
+//   Login: { screen: Login },
+//   Post: { screen: CaptionScreen }
+// },
+//   {
+//     headerMode: 'none',
+//     mode: 'modal',
+//     navigationOptions: {
+//       gesturesEnabled: false,
+//     },
+//   }
+// );
 
-    this.onSomething = this.onSomething.bind(this)
-  }
-
-  onSomething = ()=>{
-    this.props.navigation.navigate('CraetePhoto')
-  }
-
-  render(){
-    return(
-      <Tab gotoCap={this.onSomething()} />
-    )
-  }
-}
-
-
-const MainScreen = StackNavigator({
-  Home: { screen: HomeTab },
-  Login: { screen: Login },
-  CraetePhoto:{
-    screen: CreatePhotoScreen
-  }
-},
-  {
-    headerMode: 'none',
-    mode: 'modal',
-    navigationOptions: {
-      gesturesEnabled: false,
-    },
-  }
-);
-
-export default MainScreen;
+export default Tab;

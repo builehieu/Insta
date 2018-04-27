@@ -1,8 +1,23 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Button, Text, CameraRoll, AsyncStorage, List, TouchableOpacity, Image, FlatList, ActivityIndicator, Dimensions } from 'react-native';
+import {
+    StyleSheet,
+    View,
+    Button,
+    Text,
+    CameraRoll,
+    AsyncStorage,
+    List,
+    TouchableOpacity,
+    Image,
+    FlatList,
+    ActivityIndicator,
+    Dimensions
+} from 'react-native';
 import { PermissionsAndroid } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import CaptionScreen from '../CaptionScreen';
+import WithProvider from '../../components/WithProvider';
+import { imgSelected } from '../../utils/constants';
 
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -33,9 +48,16 @@ const styles = StyleSheet.create({
         borderRadius: 3,
     },
     imageReview: {
+        height: width - (width - PADDING * 2 - MARGIN * 2) / 2,
+        borderRadius: 3,
+        margin: MARGIN * 2,
+
+    },
+    imageBrowser: {
         height: width - (width - PADDING * 2 - MARGIN * 2) / 4,
         borderRadius: 3,
-        backgroundColor: 'red'
+        margin: MARGIN,
+
     },
     loadingWrapper: {
         flex: 1,
@@ -48,7 +70,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        backgroundColor: 'red'
     },
     header: {
         flexDirection: 'row',
@@ -58,7 +79,7 @@ const styles = StyleSheet.create({
 
     },
     headerWrapper: {
-        flex: 0.1,
+        flex: 0.2,
 
         backgroundColor: 'white',
         borderBottomWidth: 1,
@@ -125,16 +146,11 @@ class CreatePhotoScreen extends React.Component {
             firstQuery: false,
             //selected: res.edges[0],
         });
-
-        console.log('====================================');
-        console.log('res', res);
-        console.log('====================================');
     };
 
     _onSelect = (item) => {
-
+        
         this.setState({ selected: item });
-
     }
 
     _renderItems = ({ item }) => {
@@ -148,7 +164,6 @@ class CreatePhotoScreen extends React.Component {
                 style={styles.imageWrapper}
             >
                 <Image source={{ uri: item.node.image.uri }} style={styles.image} />
-                {/* {isSelected && <View style={styles.imageHover} />} */}
             </TouchableOpacity>
         );
     };
@@ -159,13 +174,13 @@ class CreatePhotoScreen extends React.Component {
             this._getPhotos(this.state.endCursor);
         }
     };
+    _onPressBtnNext = () => {
+        this.props.navigation.navigate('Post', {selected: this.state.selected});
+    }
 
-    
+
 
     render() {
-        console.log('====================================');
-        console.log('state', this.state);
-        console.log('====================================');
         if (this.state.loading) {
             return (
                 <View style={styles.root} >
@@ -173,17 +188,17 @@ class CreatePhotoScreen extends React.Component {
                 </View>
             )
         }
-        
+
         return (
 
             <View>
                 <View style={styles.headerWrapper}>
                     <View style={styles.header}>
-                        <TouchableOpacity style={styles.actionBtn} onPress={()=>this.props.gotoCap()}>
-                            <Feather name="x" size={27} color="black" />
+                        <TouchableOpacity  >
+                            <Feather name="x" size={27} color="black" onPress={() => this.props.navigation.navigate('Home')} />
                         </TouchableOpacity>
                         <Text>Pinstagram</Text>
-                        <TouchableOpacity style={styles.actionBtn}>
+                        <TouchableOpacity onPress={() => this._onPressBtnNext()}>
                             <Feather name="arrow-right" size={27} color="black" />
                         </TouchableOpacity>
                     </View>
@@ -195,17 +210,30 @@ class CreatePhotoScreen extends React.Component {
                     }
                 </View>
                 <FlatList
+                    style={styles.imageBrowser}
                     data={this.state.images}
                     renderItem={this._renderItems}
                     numColumns={4}
                     keyExtractor={this._keyExtractor}
-                    //extraData={this.state}
+                    // extraData={this.state}
                     onEndReached={this._onEndReached}
                 />
-
             </View>
         );
     }
 }
 
-export default CreatePhotoScreen;
+
+
+export default PostScreen = StackNavigator({
+    Create: { screen: CreatePhotoScreen },
+    Post: { screen: WithProvider(CaptionScreen) }
+},
+    {
+        headerMode: 'none',
+        mode: 'modal',
+        navigationOptions: {
+            gesturesEnabled: false,
+        },
+    }
+);

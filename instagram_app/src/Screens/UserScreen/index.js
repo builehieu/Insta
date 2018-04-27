@@ -85,8 +85,7 @@ class UserScreen extends React.Component {
         
         this.setState({ loading: true });
         await AsyncStorage.removeItem(authToken);
-        //const { navigate } = this.props.navigation;
-        //navigate('Login');
+        this.props.navigation.navigate('Login');
         this.setState({ loading: false });
     }
     render() {
